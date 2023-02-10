@@ -25,8 +25,6 @@ import java.util.concurrent.TimeUnit;
 
 public class TtsCommand extends Command {
 
-    public static final long SHINIGAMI_03 = 241974539267997697L;
-
     private static final Main instance = Main.getInstance();
     private static final ScheduledExecutorService service = Executors.newScheduledThreadPool(1);
     private static Future<?> lastScheduler;
@@ -70,16 +68,6 @@ public class TtsCommand extends Command {
             return;
         }
 
-        if (voiceChannel.getMembers().stream().anyMatch(m -> m.getIdLong() == SHINIGAMI_03)) {
-            if (messageEvent != null) {
-                messageEvent.getChannel().sendMessage("[Анти-Шинигами] Ето пизда...").queue();
-            } else {
-                slashEvent.reply("[Анти-Шинигами] Ето пизда...")
-                        .setEphemeral(true)
-                        .queue();
-            }
-            return;
-        }
 //        if (PrivateHandler.channels.contains(voiceChannel.getIdLong())
 //                && voiceChannel != member.getVoiceState().getChannel()
 //                && !member.hasPermission(voiceChannel, Permission.MANAGE_CHANNEL)
