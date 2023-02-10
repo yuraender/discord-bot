@@ -4,7 +4,6 @@ import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
 import lombok.Getter;
-import lombok.var;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
@@ -12,6 +11,7 @@ import net.dv8tion.jda.api.entities.Category;
 import net.dv8tion.jda.api.entities.VoiceChannel;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.requests.GatewayIntent;
+import net.dv8tion.jda.api.requests.restaction.CommandListUpdateAction;
 import net.dv8tion.jda.api.utils.ChunkingFilter;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
@@ -21,7 +21,6 @@ import ru.yuraender.discord.command.admin.GroupCommand;
 import ru.yuraender.discord.command.admin.GroupsCommand;
 import ru.yuraender.discord.command.admin.settings.ChannelCommand;
 import ru.yuraender.discord.command.admin.settings.PrivateChannelCommand;
-import ru.yuraender.discord.command.color.ColorCommand;
 import ru.yuraender.discord.command.tts.TtsCommand;
 import ru.yuraender.discord.command.tts.TtsLockCommand;
 import ru.yuraender.discord.command.tts.TtsVoiceCommand;
@@ -162,7 +161,6 @@ public class Main {
         new PrivateChannelCommand().register();
         new GroupCommand().register();
         new GroupsCommand().register();
-        new ColorCommand().register();
 //        new VoiceBotCommand().register();
         new TtsCommand().register();
         new TtsLockCommand().register();
@@ -171,7 +169,7 @@ public class Main {
         new HelpCommand().register();
         new ServerInfoCommand().register();
 
-        var action = jda.updateCommands();
+        CommandListUpdateAction action = jda.updateCommands();
         for (Map.Entry<String, Command> entry : commands.entrySet()) {
             CommandData commandData = entry.getValue().getCommandData();
             if (commandData == null) {

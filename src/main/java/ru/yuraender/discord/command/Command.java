@@ -2,6 +2,7 @@ package ru.yuraender.discord.command;
 
 import lombok.Getter;
 import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
@@ -39,8 +40,6 @@ public abstract class Command {
         this.aliases.addAll(Arrays.asList(aliases));
     }
 
-//    public abstract void execute(MessageReceivedEvent event, String[] args);
-
     public abstract void execute(SlashCommandEvent event);
 
     public CommandData getCommandData() {
@@ -51,15 +50,9 @@ public abstract class Command {
         return message.getMentionedUsers().get(0);
     }
 
-//    public long getUserIdByMention(String mention) {
-//        return Long.parseLong(mention.replace("<@!", "")
-//                .replace("<@", "")
-//                .replace(">", ""));
-//    }
-
-//    public long getChannelIdByMention(Message message) {
-//        return Long.parseLong(mention.replace("<#", "").replace(">", ""));
-//    }
+    public TextChannel getChannelByMention(Message message) {
+        return message.getMentionedChannels().get(0);
+    }
 
     public void register() {
         Main.getInstance().getCommands().put(name, this);
