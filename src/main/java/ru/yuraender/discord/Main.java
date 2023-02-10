@@ -98,16 +98,16 @@ public class Main {
             if (botGuild.getPrivateChannelId() == 0) {
                 continue;
             }
-            VoiceChannel voiceChannel = jda.getVoiceChannelById(botGuild.getPrivateChannelId());
-            if (voiceChannel == null) {
+            VoiceChannel privateChannel = jda.getVoiceChannelById(botGuild.getPrivateChannelId());
+            if (privateChannel == null) {
                 continue;
             }
-            Category category = voiceChannel.getParent();
+            Category category = privateChannel.getParent();
             if (category == null) {
                 continue;
             }
             for (VoiceChannel channel : category.getVoiceChannels()) {
-                if (channel.getIdLong() == voiceChannel.getIdLong()) {
+                if (channel.getIdLong() == privateChannel.getIdLong()) {
                     continue;
                 }
                 if (channel.getMembers().size() != 0) {

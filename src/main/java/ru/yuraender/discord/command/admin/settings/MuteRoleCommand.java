@@ -1,6 +1,5 @@
 package ru.yuraender.discord.command.admin.settings;
 
-import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
@@ -21,16 +20,21 @@ public class MuteRoleCommand extends Command {
     @Override
     public void execute(SlashCommandEvent event) {
         BotGuild guild = guildRegistry.get(event.getGuild().getIdLong());
-        Role role;
+        long id;
         if (event.getOption("role") != null) {
-            role = event.getOption("role").getAsRole();
-            guild.setMuteRoleId(role.getIdLong());
+            id = event.getOption("role").getAsLong();
+            if (event.getGuild().getRoleById(id) == null) {
+                event.reply("[Ошибка] Такой роли не существует на этом сервере.")
+                        .setEphemeral(true)
+                        .queue();
+                return;
+            }
         } else {
-            role = null;
-            guild.setMuteRoleId(0L);
+            id = 0L;
         }
+        guild.setMuteRoleId(id);
         guildRegistry.save(guild);
-        event.reply("[Настройки] Вы изменили роль мута на этом сервере на `" + role + "`.").queue();
+        event.reply("[Настройки] Вы изменили роль мута на этом сервере на `" + id + "`.").queue();
     }
 
     @Override

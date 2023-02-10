@@ -83,7 +83,7 @@ public class GroupCommand extends Command {
             if (group == PermissionGroup.UNTRUSTED) {
                 continue;
             }
-            actions.addChoice(group.getName().toLowerCase(), group.name());
+            groups.addChoice(group.getName().toLowerCase(), group.name());
         }
         return super.getCommandData()
                 .addOptions(

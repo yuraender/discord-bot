@@ -2,7 +2,6 @@ package ru.yuraender.discord.listener;
 
 import com.google.common.collect.Lists;
 import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.Category;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.VoiceChannel;
@@ -45,9 +44,8 @@ public class PrivateHandler extends ListenerAdapter {
     private void createChannel(VoiceChannel channel, Member member) {
         Guild guild = channel.getGuild();
         BotGuild botGuild = guildRegistry.get(guild.getIdLong());
-        if (channel.getIdLong() == botGuild.getPrivateChannelId()) {
-            Category category = channel.getParent();
-            category.createVoiceChannel(member.getEffectiveName())
+        if (channel.getIdLong() == botGuild.getPrivateChannelId() && channel.getParent() != null) {
+            channel.getParent().createVoiceChannel(member.getEffectiveName())
                     .setUserlimit(2)
                     .syncPermissionOverrides()
                     .addPermissionOverride(

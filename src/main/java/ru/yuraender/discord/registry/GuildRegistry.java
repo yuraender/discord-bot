@@ -146,7 +146,8 @@ public class GuildRegistry {
                 get(user.getServerId()).getUsers().add(user);
                 c.dsl().insertInto(table("users"))
                         .values(user.getId(), user.getServerId(),
-                                String.join(",", groups), String.join(",", permissions))
+                                String.join(",", groups), String.join(",", permissions),
+                                user.getVoice().name(), user.getEmotion().name())
                         .execute();
             }
         }));

@@ -7,7 +7,10 @@ import net.dv8tion.jda.api.entities.VoiceChannel;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
+import ru.yuraender.discord.Main;
+import ru.yuraender.discord.entity.BotGuild;
 import ru.yuraender.discord.entity.enums.PermissionGroup;
+import ru.yuraender.discord.listener.PrivateHandler;
 
 import java.util.List;
 import java.util.concurrent.Executors;
@@ -27,6 +30,7 @@ public class CrazyMoveCommand extends Command {
     @Override
     public void execute(SlashCommandEvent event) {
         Guild guild = event.getGuild();
+        BotGuild botGuild = Main.getInstance().getGuildRegistry().get(guild.getIdLong());
         User user = event.getOption("user").getAsUser();
         Member member = guild.getMemberById(user.getIdLong());
         if (!member.getVoiceState().inVoiceChannel()) {
@@ -44,16 +48,14 @@ public class CrazyMoveCommand extends Command {
                 if (--times >= 0) {
                     List<VoiceChannel> channels = guild.getVoiceChannels()
                             .stream()
-                            .filter(c -> c.getParent() == null || c.getParent().getIdLong() != 665895668535001091L)
+                            .filter(c -> c.getIdLong() != botGuild.getPrivateChannelId()
+                                    && !PrivateHandler.channels.contains(c.getIdLong()))
                             .collect(Collectors.toList());
                     guild.moveVoiceMember(
                             member,
                             channels.get(ThreadLocalRandom.current().nextInt(channels.size()))
                     ).queue();
-                    try {
-                        guild.moveVoiceMember(member, oldChannel).queueAfter(50L, TimeUnit.MILLISECONDS);
-                    } catch (Exception ignored) {
-                    }
+                    guild.moveVoiceMember(member, oldChannel).queueAfter(50L, TimeUnit.MILLISECONDS);
                 } else {
                     Thread.currentThread().interrupt();
                 }

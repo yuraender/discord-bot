@@ -20,12 +20,17 @@ public class ChannelCommand extends Command {
     @Override
     public void execute(SlashCommandEvent event) {
         BotGuild guild = guildRegistry.get(event.getGuild().getIdLong());
-        long id = event.getOption("channel").getAsLong();
-        if (id != 0 && event.getGuild().getTextChannelById(id) == null) {
-            event.reply("[Ошибка] Такого канала не существует на этом сервере.")
-                    .setEphemeral(true)
-                    .queue();
-            return;
+        long id;
+        if (event.getOption("channel") != null) {
+            id = event.getOption("channel").getAsLong();
+            if (event.getGuild().getTextChannelById(id) == null) {
+                event.reply("[Ошибка] Такого канала не существует на этом сервере.")
+                        .setEphemeral(true)
+                        .queue();
+                return;
+            }
+        } else {
+            id = 0L;
         }
         guild.setChannelId(id);
         guildRegistry.save(guild);
@@ -35,6 +40,6 @@ public class ChannelCommand extends Command {
     @Override
     public CommandData getCommandData() {
         return super.getCommandData()
-                .addOption(OptionType.CHANNEL, "channel", "Канал", true);
+                .addOption(OptionType.CHANNEL, "channel", "Канал", false);
     }
 }
